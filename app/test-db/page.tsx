@@ -1,5 +1,10 @@
 import turso from "@/lib/db";
 
+interface TableRow {
+  name: string;
+  [key: string]: unknown;
+}
+
 export default async function TestDBPage() {
   try {
     // Test database connection
@@ -19,16 +24,16 @@ export default async function TestDBPage() {
           <div className="p-4 border rounded-lg bg-green-50">
             <h2 className="text-lg font-semibold text-green-800">Connection Status</h2>
             <p className="text-green-700">✅ Successfully connected to Turso database</p>
-            <p className="text-sm text-gray-600">Message: {result.rows[0].message}</p>
+            <p className="text-sm text-gray-600">Message: {String(result.rows[0].message)}</p>
           </div>
           
           <div className="p-4 border rounded-lg">
             <h2 className="text-lg font-semibold mb-2">Database Tables</h2>
             {tables.rows.length > 0 ? (
               <ul className="space-y-1">
-                {tables.rows.map((table: { name: string }, index: number) => (
+                {tables.rows.map((table, index: number) => (
                   <li key={index} className="text-sm text-gray-700">
-                    📋 {table.name}
+                    📋 {String((table as unknown as TableRow).name)}
                   </li>
                 ))}
               </ul>
